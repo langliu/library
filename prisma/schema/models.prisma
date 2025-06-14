@@ -1,0 +1,29 @@
+
+model Model {
+  /// 唯一标识符
+  id           String   @id @default(uuid())
+  /// 创建时间
+  createdAt    DateTime @default(now())
+  /// 更新时间
+  updatedAt    DateTime @updatedAt
+  /// 名称
+  name         String
+  /// 描述
+  description  String?
+  /// 头像URL
+  avatar       String?
+  /// X（推特）链接
+  xUrl         String?
+  /// Instagram链接
+  instagramUrl String?
+  /// 微博链接
+  weiboUrl     String?
+  /// Patreon链接
+  patreonUrl   String?
+  /// YouTube链接
+  youtubeUrl   String?
+  /// 是否已删除
+  isDeleted    Boolean  @default(false)
+
+  @@map("models")
+}
