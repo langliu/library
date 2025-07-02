@@ -15,6 +15,7 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
+  IconUser,
   IconUsers,
 } from '@tabler/icons-react'
 import type * as React from 'react'
@@ -103,7 +104,12 @@ const data = {
     {
       icon: IconDashboard,
       title: 'Dashboard',
-      url: '#',
+      url: '/dashboard',
+    },
+    {
+      icon: IconUser,
+      title: '模特管理',
+      url: '/dashboard/models',
     },
     {
       icon: IconListDetails,
@@ -150,7 +156,10 @@ const data = {
   },
 }
 
-export function AppSidebar({ user, ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { user?: any }) {
   return (
     <Sidebar collapsible='offcanvas' {...props}>
       <SidebarHeader>

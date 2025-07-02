@@ -20,7 +20,7 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "cSpell.words": ["sonner", "tabler", "turbopack", "vaul"],
+  "cSpell.words": ["sonner", "tabler", "turbopack", "vaul", "weibo"],
   "editor.codeActionsOnSave": {
     "source.action.useSortedKeys.biome": "explicit",
     "source.fixAll.biome": "explicit",

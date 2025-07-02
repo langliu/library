@@ -1,7 +1,8 @@
 'use client'
 
+import { Loader2 } from 'lucide-react'
 import { redirect } from 'next/navigation'
-import { useId } from 'react'
+import { useId, useTransition } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,23 +13,26 @@ import { cn } from '@/lib/utils'
 export function LoginForm({ className, ...props }: React.ComponentProps<'form'>) {
   const emailId = useId()
   const passwordId = useId()
+  const [isPending, startTransition] = useTransition()
 
   async function signInAction(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
     const email = formData.get('email') as string
     const password = formData.get('password') as string
-    await signIn.email(
-      { email, password },
-      {
-        onError: (error) => {
-          toast.error(error.error.message)
+    startTransition(async () => {
+      await signIn.email(
+        { email, password },
+        {
+          onError: (error) => {
+            toast.error(error.error.message)
+          },
+          onSuccess: () => {
+            redirect('/dashboard')
+          },
         },
-        onSuccess: () => {
-          redirect('/dashboard')
-        },
-      },
-    )
+      )
+    })
   }
   return (
     <form className={cn('flex flex-col gap-6', className)} {...props} onSubmit={signInAction}>
@@ -52,8 +56,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
           </div>
           <Input id={passwordId} name='password' required type='password' />
         </div>
-        <Button className='w-full' type='submit'>
-          Login
+        <Button className='w-full' disabled={isPending} type='submit'>
+          {isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+          {isPending ? 'Logging in...' : 'Login'}
         </Button>
         <div className='after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t'>
           <span className='bg-background text-muted-foreground relative z-10 px-2'>

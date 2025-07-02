@@ -1,7 +1,8 @@
 'use client'
 
+import { Loader2 } from 'lucide-react'
 import { redirect } from 'next/navigation'
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,6 +14,8 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'form
   const nameId = useId()
   const emailId = useId()
   const passwordId = useId()
+
+  const [isPending, setIsPending] = useState(false)
 
   async function signUpAction(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -26,6 +29,12 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'form
       {
         onError: (error) => {
           toast.error(error.error.message)
+        },
+        onRequest: () => {
+          setIsPending(true)
+        },
+        onResponse: () => {
+          setIsPending(false)
         },
         onSuccess: () => {
           redirect('/')
@@ -54,7 +63,8 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'form
           <Label htmlFor={passwordId}>Password</Label>
           <Input id={passwordId} name='password' required type='password' />
         </div>
-        <Button className='w-full' type='submit'>
+        <Button className='w-full' disabled={isPending} type='submit'>
+          {isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
           注册
         </Button>
         <div className='after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t'>
