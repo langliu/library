@@ -2,6 +2,7 @@
 
 import { IconPlus, IconX } from '@tabler/icons-react'
 import { useId, useState } from 'react'
+import { AvatarUpload } from '@/components/avatar-upload'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -78,30 +79,25 @@ export function ModelForm({
       </CardHeader>
       <CardContent>
         <form className='space-y-6' onSubmit={handleSubmit}>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-            <div className='space-y-2'>
-              <Label htmlFor={nameId}>姓名 *</Label>
-              <Input
-                disabled={isLoading}
-                id={nameId}
-                onChange={(e) => handleChange('name', e.target.value)}
-                placeholder='请输入模特姓名'
-                required
-                value={formData.name}
-              />
-            </div>
+          <div className='space-y-2'>
+            <Label htmlFor={nameId}>姓名 *</Label>
+            <Input
+              disabled={isLoading}
+              id={nameId}
+              onChange={(e) => handleChange('name', e.target.value)}
+              placeholder='请输入模特姓名'
+              required
+              value={formData.name}
+            />
+          </div>
 
-            <div className='space-y-2'>
-              <Label htmlFor={avatarId}>头像URL</Label>
-              <Input
-                disabled={isLoading}
-                id={avatarId}
-                onChange={(e) => handleChange('avatar', e.target.value)}
-                placeholder='https://example.com/avatar.jpg'
-                type='url'
-                value={formData.avatar}
-              />
-            </div>
+          <div className='space-y-2'>
+            <Label>头像</Label>
+            <AvatarUpload
+              disabled={isLoading}
+              onChange={(url: string) => handleChange('avatar', url)}
+              value={formData.avatar}
+            />
           </div>
 
           <div className='space-y-2'>
