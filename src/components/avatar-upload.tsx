@@ -5,7 +5,6 @@ import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { generateDownloadUrl } from '@/lib/s3'
 import { cn } from '@/lib/utils'
 
 interface AvatarUploadProps {
@@ -51,10 +50,8 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
         }
 
         const data = await response.json()
-        onChange(data.url)
-        // const rr = await generateDownloadUrl(data.url)
-        const kk = (await fetch(`/api/image/${data.key}`)).json()
-        console.log('头像上传成功', data, kk)
+        onChange(data.key)
+
         toast.success('头像上传成功')
       } catch (error) {
         console.error('上传失败:', error)
@@ -107,7 +104,7 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
     <div className={cn('space-y-4', className)}>
       <div className='flex items-center space-x-4'>
         <Avatar className='h-20 w-20'>
-          <AvatarImage alt='头像' src={value || ''} />
+          <AvatarImage alt='头像' src={value ? `/api/image/${value}` : ''} />
           <AvatarFallback>
             <IconCamera className='h-8 w-8 text-muted-foreground' />
           </AvatarFallback>
@@ -152,35 +149,6 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
         onChange={handleFileSelect}
         type='file'
       />
-
-      {/* 拖拽上传区域 */}
-      <div
-        className={cn(
-          'border-2 border-dashed rounded-lg p-6 text-center transition-colors',
-          dragOver
-            ? 'border-primary bg-primary/5'
-            : 'border-muted-foreground/25 hover:border-muted-foreground/50',
-          disabled && 'opacity-50 pointer-events-none',
-        )}
-        onDragLeave={handleDragLeave}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        role='button'
-        tabIndex={0}
-      >
-        <IconUpload className='mx-auto h-8 w-8 text-muted-foreground mb-2' />
-        <p className='text-sm text-muted-foreground'>
-          拖拽图片到此处，或{' '}
-          <button
-            className='text-primary hover:underline'
-            disabled={disabled || isUploading}
-            onClick={() => document.getElementById('avatar-upload')?.click()}
-            type='button'
-          >
-            点击选择
-          </button>
-        </p>
-      </div>
     </div>
   )
 }

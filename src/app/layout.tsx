@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
+import Providers from './provider'
 
 import './globals.css'
 
@@ -16,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang='zh-CN'>
       <body className={`antialiased`}>
-        {children}
+        <Providers>{children}</Providers>
         <Toaster richColors />
       </body>
     </html>

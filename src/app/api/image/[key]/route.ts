@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import { generateDownloadUrl } from '@/lib/s3'
 
-export async function GET(request: Request, { params }: { params: { key: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ key: string }> }) {
   try {
-    const { key } = params
+    const { key } = await params
     const decodedKey = decodeURIComponent(key)
 
     // 生成预签名 URL
