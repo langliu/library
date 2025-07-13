@@ -1,15 +1,14 @@
 import { NextResponse } from 'next/server'
 import { generateDownloadUrl } from '@/lib/s3'
 
-export async function GET(request: Request, { params }: { params: Promise<{ key: string }> }) {
+export async function GET(_: Request, { params }: { params: Promise<{ path: string[] }> }) {
   try {
-    const { key } = await params
-    const decodedKey = decodeURIComponent(key)
-
+    const { path } = await params
+    const decodedPath = path.map((segment) => decodeURIComponent(segment)).join('/')
     // 生成预签名 URL
-    const url = await generateDownloadUrl(decodedKey)
+    const url = await generateDownloadUrl(decodedPath)
 
-    // 重定向到预签名 URL
+    // 返回图像数据，设置适当的响应头
     return NextResponse.redirect(url)
   } catch (error) {
     console.error('Image access error:', error)

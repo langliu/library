@@ -17,7 +17,6 @@ interface AvatarUploadProps {
 
 export function AvatarUpload({ value, onChange, disabled = false, className }: AvatarUploadProps) {
   const [isUploading, setIsUploading] = useState(false)
-  const [dragOver, setDragOver] = useState(false)
   const [cropFile, setCropFile] = useState<File | null>(null)
   const [cropOpen, setCropOpen] = useState(false)
 
@@ -92,34 +91,6 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
     }
   }, [])
 
-  const handleDrop = useCallback((event: React.DragEvent) => {
-    event.preventDefault()
-    setDragOver(false)
-    const file = event.dataTransfer.files?.[0]
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        toast.error('请选择图片文件')
-        return
-      }
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error('图片大小不能超过2MB')
-        return
-      }
-      setCropFile(file)
-      setCropOpen(true)
-    }
-  }, [])
-
-  const handleDragOver = useCallback((event: React.DragEvent) => {
-    event.preventDefault()
-    setDragOver(true)
-  }, [])
-
-  const handleDragLeave = useCallback((event: React.DragEvent) => {
-    event.preventDefault()
-    setDragOver(false)
-  }, [])
-
   const handleRemove = useCallback(() => {
     onChange('')
   }, [onChange])
@@ -137,8 +108,13 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
           <div className='flex space-x-2'>
             <Button
               disabled={disabled || isUploading}
-              onClick={() => document.getElementById('avatar-upload')?.click()}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                document.getElementById('avatar-upload')?.click()
+              }}
               size='sm'
+              type='button'
               variant='outline'
             >
               {isUploading ? (
@@ -154,7 +130,17 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
               )}
             </Button>
             {value && (
-              <Button disabled={disabled} onClick={handleRemove} size='sm' variant='outline'>
+              <Button
+                disabled={disabled}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  handleRemove()
+                }}
+                size='sm'
+                type='button'
+                variant='outline'
+              >
                 <IconX className='mr-2 h-4 w-4' />
                 移除
               </Button>
@@ -171,6 +157,7 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
         disabled={disabled || isUploading}
         id='avatar-upload'
         onChange={handleFileSelect}
+        onClick={(e) => e.stopPropagation()}
         type='file'
       />
       {/* 裁剪弹窗 */}

@@ -1,6 +1,7 @@
 'use client'
 
 import { IconDots, IconEdit, IconEye, IconSearch, IconTrash } from '@tabler/icons-react'
+import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
@@ -48,6 +49,7 @@ interface ModelsResponse {
 }
 
 export function ModelsTable() {
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
   const [models, setModels] = useState<Model[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -107,6 +109,10 @@ export function ModelsTable() {
     if (url) {
       window.open(url, '_blank', 'noopener,noreferrer')
     }
+  }
+
+  const handleEditModel = (modelId: string) => {
+    router.push(`/dashboard/models/${modelId}/edit`)
   }
 
   if (error) {
@@ -249,7 +255,7 @@ export function ModelsTable() {
                           <IconEye className='mr-2 h-4 w-4' />
                           查看详情
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEditModel(model.id)}>
                           <IconEdit className='mr-2 h-4 w-4' />
                           编辑
                         </DropdownMenuItem>

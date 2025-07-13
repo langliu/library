@@ -179,7 +179,16 @@ export function ModelForm({
           </div>
 
           <div className='flex justify-end space-x-2'>
-            <Button disabled={isLoading} onClick={onCancel} type='button' variant='outline'>
+            <Button
+              disabled={isLoading}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                onCancel()
+              }}
+              type='button'
+              variant='outline'
+            >
               <IconX className='mr-2 h-4 w-4' />
               取消
             </Button>
