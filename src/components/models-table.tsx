@@ -162,7 +162,10 @@ export function ModelsTable() {
                   <TableCell>
                     <div className='flex items-center space-x-3'>
                       <Avatar className='h-10 w-10'>
-                        <AvatarImage alt={model.name} src={model.avatar || ''} />
+                        <AvatarImage
+                          alt={model.name}
+                          src={model.avatar ? `/api/image/${model.avatar}` : ''}
+                        />
                         <AvatarFallback>{getInitials(model.name)}</AvatarFallback>
                       </Avatar>
                       <div>

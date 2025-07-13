@@ -3,6 +3,7 @@
 import { IconCamera, IconUpload, IconX } from '@tabler/icons-react'
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
+import { ImageCropper } from '@/components/image-cropper'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -17,6 +18,8 @@ interface AvatarUploadProps {
 export function AvatarUpload({ value, onChange, disabled = false, className }: AvatarUploadProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [dragOver, setDragOver] = useState(false)
+  const [cropFile, setCropFile] = useState<File | null>(null)
+  const [cropOpen, setCropOpen] = useState(false)
 
   const handleUpload = useCallback(
     async (file: File) => {
@@ -29,8 +32,8 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
       }
 
       // 验证文件大小 (2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error('图片大小不能超过2MB')
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('图片大小不能超过10MB')
         return
       }
 
@@ -63,28 +66,49 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
     [onChange],
   )
 
-  const handleFileSelect = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0]
-      if (file) {
-        handleUpload(file)
-      }
+  // 裁剪完成后上传
+  const handleCropComplete = useCallback(
+    async (croppedFile: File) => {
+      setCropOpen(false)
+      setCropFile(null)
+      await handleUpload(croppedFile)
     },
     [handleUpload],
   )
 
-  const handleDrop = useCallback(
-    (event: React.DragEvent) => {
-      event.preventDefault()
-      setDragOver(false)
-
-      const file = event.dataTransfer.files?.[0]
-      if (file) {
-        handleUpload(file)
+  const handleFileSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error('请选择图片文件')
+        return
       }
-    },
-    [handleUpload],
-  )
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('图片大小不能超过10MB')
+        return
+      }
+      setCropFile(file)
+      setCropOpen(true)
+    }
+  }, [])
+
+  const handleDrop = useCallback((event: React.DragEvent) => {
+    event.preventDefault()
+    setDragOver(false)
+    const file = event.dataTransfer.files?.[0]
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error('请选择图片文件')
+        return
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error('图片大小不能超过2MB')
+        return
+      }
+      setCropFile(file)
+      setCropOpen(true)
+    }
+  }, [])
 
   const handleDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault()
@@ -136,7 +160,7 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
               </Button>
             )}
           </div>
-          <p className='text-sm text-muted-foreground'>支持 JPG、PNG 格式，最大 2MB</p>
+          <p className='text-sm text-muted-foreground'>支持 JPG、PNG 格式，最大 10MB</p>
         </div>
       </div>
 
@@ -149,6 +173,18 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
         onChange={handleFileSelect}
         type='file'
       />
+      {/* 裁剪弹窗 */}
+      {cropFile && (
+        <ImageCropper
+          file={cropFile}
+          isOpen={cropOpen}
+          onCancel={() => {
+            setCropOpen(false)
+            setCropFile(null)
+          }}
+          onCropComplete={handleCropComplete}
+        />
+      )}
     </div>
   )
 }
