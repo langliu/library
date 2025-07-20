@@ -24,7 +24,6 @@ export default async function Home() {
               )}
               <div className='flex flex-col'>
                 <span className='text-sm font-medium'>{model.name}</span>
-                <span className='text-xs text-gray-500'>{model.description}</span>
                 {model.xUrl && <SiX className='w-4 h-4' />}
                 {model.instagramUrl && <SiInstagram className='w-4 h-4' />}
                 {model.weiboUrl && <SiSinaweibo className='w-4 h-4' />}
