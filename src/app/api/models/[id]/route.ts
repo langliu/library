@@ -26,7 +26,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params
     const body = await request.json()
-    const { name, description, avatar, xUrl, instagramUrl, weiboUrl, patreonUrl, youtubeUrl } = body
+    const { name, avatar, xUrl, instagramUrl, weiboUrl, patreonUrl, youtubeUrl } = body
 
     if (!name) {
       return NextResponse.json({ error: '模特姓名是必填项' }, { status: 400 })
@@ -44,7 +44,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const updatedModel = await prisma.model.update({
       data: {
         avatar,
-        description,
         instagramUrl,
         name,
         patreonUrl,

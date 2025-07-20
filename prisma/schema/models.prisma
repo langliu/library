@@ -8,8 +8,6 @@ model Model {
   updatedAt    DateTime @updatedAt
   /// 名称
   name         String
-  /// 描述
-  description  String?
   /// 头像URL
   avatar       String?
   /// X（推特）链接
@@ -24,6 +22,8 @@ model Model {
   youtubeUrl   String?
   /// 是否已删除
   isDeleted    Boolean  @default(false)
+  /// 关联的专辑（多对多关系）
+  albums       ModelsToAlbums[]
 
   @@map("models")
 }

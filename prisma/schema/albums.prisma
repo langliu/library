@@ -1,0 +1,25 @@
+
+model Album {
+  /// 唯一标识符
+  id           String   @id @default(uuid())
+  /// 创建时间
+  createdAt    DateTime @default(now())
+  /// 更新时间
+  updatedAt    DateTime @updatedAt
+  /// 专辑名称
+  name         String
+  /// 专辑描述
+  description  String?
+  /// 封面图片URL
+  cover        String?
+  /// 图片数量
+  imageCount   Int      @default(0)
+  /// 视频数量
+  videoCount   Int      @default(0)
+  /// 是否已删除
+  isDeleted    Boolean  @default(false)
+  /// 关联的模特（多对多关系）
+  models        ModelsToAlbums[]
+
+  @@map("albums")
+}

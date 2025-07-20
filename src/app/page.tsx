@@ -14,7 +14,14 @@ export default async function Home() {
         {models.map((model) => (
           <li className='mb-2' key={model.id}>
             <div className='flex items-center gap-2'>
-              {model.avatar && <Image alt={model.name} height={40} src={model.avatar} width={40} />}
+              {model.avatar && (
+                <Image
+                  alt={model.name}
+                  height={40}
+                  src={model.avatar ? `/api/image/${model.avatar}` : ''}
+                  width={40}
+                />
+              )}
               <div className='flex flex-col'>
                 <span className='text-sm font-medium'>{model.name}</span>
                 <span className='text-xs text-gray-500'>{model.description}</span>

@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, description, avatar, xUrl, instagramUrl, weiboUrl, patreonUrl, youtubeUrl } = body
+    const { name, avatar, xUrl, instagramUrl, weiboUrl, patreonUrl, youtubeUrl } = body
 
     if (!name) {
       return NextResponse.json({ error: '模特姓名是必填项' }, { status: 400 })
@@ -59,7 +59,6 @@ export async function POST(request: NextRequest) {
     const model = await prisma.model.create({
       data: {
         avatar,
-        description,
         instagramUrl,
         name,
         patreonUrl,

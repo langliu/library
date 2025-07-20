@@ -18,7 +18,6 @@ interface ModelFormProps {
 
 export interface ModelFormData {
   name: string
-  description: string
   avatar: string
   xUrl: string
   instagramUrl: string
@@ -35,8 +34,6 @@ export function ModelForm({
   isLoading = false,
 }: ModelFormProps) {
   const nameId = useId()
-  const avatarId = useId()
-  const descriptionId = useId()
   const xUrlId = useId()
   const instagramUrlId = useId()
   const weiboUrlId = useId()
@@ -46,7 +43,6 @@ export function ModelForm({
   const [formData, setFormData] = useState<ModelFormData>(
     initialData || {
       avatar: '',
-      description: '',
       instagramUrl: '',
       name: '',
       patreonUrl: '',
@@ -97,19 +93,6 @@ export function ModelForm({
               disabled={isLoading}
               onChange={(url: string) => handleChange('avatar', url)}
               value={formData.avatar}
-            />
-          </div>
-
-          <div className='space-y-2'>
-            <Label htmlFor={descriptionId}>描述</Label>
-            <Input
-              disabled={isLoading}
-              id={descriptionId}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleChange('description', e.target.value)
-              }
-              placeholder='请输入模特描述信息'
-              value={formData.description}
             />
           </div>
 

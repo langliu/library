@@ -41,6 +41,9 @@ export function AvatarUpload({ value, onChange, disabled = false, className }: A
       try {
         const formData = new FormData()
         formData.append('file', file)
+        formData.append('prefix', 'avatar')
+
+        console.log('formData', formData.values())
 
         const response = await fetch('/api/upload', {
           body: formData,

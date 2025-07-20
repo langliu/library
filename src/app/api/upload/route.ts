@@ -6,6 +6,8 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File
+    const prefix = formData.get('prefix') as string
+    console.log('prefix', prefix)
 
     if (!file) {
       return NextResponse.json({ error: 'File is required' }, { status: 400 })
@@ -13,13 +15,14 @@ export async function POST(request: Request) {
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const filename = `${Date.now()}-${file.name.replace(/\s+/g, '-')}`
+    const key = prefix ? `${prefix}/${filename}` : filename
 
     await s3Client.send(
       new PutObjectCommand({
         Body: buffer,
         Bucket: process.env.AWS_BUCKET_NAME,
         ContentType: file.type,
-        Key: filename,
+        Key: key,
       }),
     )
 
@@ -27,7 +30,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       filetype: file.type,
-      key: filename,
+      key,
       url: fileUrl,
     })
   } catch (error) {

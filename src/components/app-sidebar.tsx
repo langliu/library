@@ -12,6 +12,7 @@ import {
   IconHelp,
   IconInnerShadowTop,
   IconListDetails,
+  IconMusic,
   IconReport,
   IconSearch,
   IconSettings,
@@ -112,6 +113,11 @@ const data = {
       url: '/dashboard/models',
     },
     {
+      icon: IconMusic,
+      title: '专辑管理',
+      url: '/dashboard/albums',
+    },
+    {
       icon: IconListDetails,
       title: 'Lifecycle',
       url: '#',
@@ -164,9 +170,12 @@ export function AppSidebar({
     <Sidebar collapsible='offcanvas' {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild className='data-[slot=sidebar-menu-button]:!p-1.5'>
-              <a href='/dashboard'>
+          <SidebarMenuItem className='cursor-pointer'>
+            <SidebarMenuButton
+              asChild
+              className='data-[slot=sidebar-menu-button]:!p-1.5 cursor-pointer'
+            >
+              <a className='cursor-pointer' href='/dashboard'>
                 <IconInnerShadowTop className='!size-5' />
                 <span className='text-base font-semibold'>Allen Library.</span>
               </a>

@@ -1,0 +1,10 @@
+model ModelsToAlbums {
+  modelId String @map("model_id")
+  albumId String @map("album_id")
+
+  model Model @relation(fields: [modelId], references: [id])
+  album Album @relation(fields: [albumId], references: [id])
+
+  @@id([modelId, albumId])
+  @@map("models_to_albums")
+}

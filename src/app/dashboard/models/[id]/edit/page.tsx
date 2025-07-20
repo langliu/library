@@ -1,17 +1,16 @@
 'use client'
 
-import { IconArrowLeft, IconEdit } from '@tabler/icons-react'
+import { IconArrowLeft } from '@tabler/icons-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { ModelForm, type ModelFormData } from '@/components/model-form'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 
 interface Model {
   id: string
   name: string
-  description: string | null
   avatar: string | null
   xUrl: string | null
   instagramUrl: string | null
@@ -82,7 +81,6 @@ export default function EditModelPage({ params }: { params: Promise<{ id: string
         throw new Error(errorData.error || '更新模特失败')
       }
 
-      const result = await response.json()
       toast.success('模特信息更新成功！')
 
       // 返回模特列表页面
@@ -176,7 +174,6 @@ export default function EditModelPage({ params }: { params: Promise<{ id: string
       <ModelForm
         initialData={{
           avatar: model.avatar || '',
-          description: model.description || '',
           instagramUrl: model.instagramUrl || '',
           name: model.name,
           patreonUrl: model.patreonUrl || '',
