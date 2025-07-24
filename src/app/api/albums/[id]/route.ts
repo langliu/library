@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 
 // 获取单个专辑信息
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
 
@@ -59,6 +59,9 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     if (!existingAlbum) {
       return NextResponse.json({ error: '专辑不存在' }, { status: 404 })
     }
+    await prisma.modelsToAlbums.deleteMany({
+      where: { albumId: id },
+    })
 
     const updatedAlbum = await prisma.album.update({
       data: {
@@ -68,7 +71,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         models: {
           create:
             modelIds && modelIds.length > 0 ? modelIds.map((modelId: string) => ({ modelId })) : [],
-          deleteMany: {}, // 先清空现有关联
         },
         name,
         videoCount: videoCount || 0,

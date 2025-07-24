@@ -1,0 +1,18 @@
+model AlbumPhoto {
+  /// 唯一标识符
+  id           String   @id @default(uuid())
+  /// 创建时间
+  createdAt    DateTime @default(now())
+  /// 更新时间
+  updatedAt    DateTime @updatedAt
+  /// 专辑ID
+  albumId      String
+  /// 图片URL
+  url          String
+  /// 是否已删除
+  isDeleted    Boolean  @default(false)
+  /// 关联的专辑
+  album        Album    @relation(fields: [albumId], references: [id])
+
+  @@map("album_photos")
+}

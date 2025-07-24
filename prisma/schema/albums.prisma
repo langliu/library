@@ -20,6 +20,8 @@ model Album {
   isDeleted    Boolean  @default(false)
   /// 关联的模特（多对多关系）
   models        ModelsToAlbums[]
+  /// 关联的专辑照片
+  photos       AlbumPhoto[]
 
   @@map("albums")
 }

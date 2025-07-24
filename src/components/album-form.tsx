@@ -1,8 +1,7 @@
 'use client'
 
-import { IconPlus, IconX } from '@tabler/icons-react'
+import { IconEdit, IconPlus, IconX } from '@tabler/icons-react'
 import { useEffect, useId, useState } from 'react'
-import { AvatarUpload } from '@/components/avatar-upload'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -39,7 +38,6 @@ export function AlbumForm({
   isLoading = false,
 }: AlbumFormProps) {
   const nameId = useId()
-  const coverId = useId()
   const descriptionId = useId()
   const imageCountId = useId()
   const videoCountId = useId()
@@ -96,11 +94,11 @@ export function AlbumForm({
   }
 
   return (
-    <Card className='w-full max-w-2xl mx-auto'>
+    <Card className='w-full mx-auto'>
       <CardHeader>
         <CardTitle className='flex items-center gap-2'>
           {isEditing ? '编辑专辑' : '添加专辑'}
-          <IconPlus className='h-5 w-5' />
+          {isEditing ? <IconEdit className='h-5 w-5' /> : <IconPlus className='h-5 w-5' />}
         </CardTitle>
         <CardDescription>{isEditing ? '修改专辑信息' : '添加新的专辑到系统中'}</CardDescription>
       </CardHeader>
@@ -115,15 +113,6 @@ export function AlbumForm({
               placeholder='请输入专辑名称'
               required
               value={formData.name}
-            />
-          </div>
-
-          <div className='space-y-2'>
-            <Label>封面图片</Label>
-            <AvatarUpload
-              disabled={isLoading}
-              onChange={(url: string) => handleChange('cover', url)}
-              value={formData.cover}
             />
           </div>
 

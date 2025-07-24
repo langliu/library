@@ -127,7 +127,7 @@ export default function EditAlbumPage() {
   }
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6 px-6'>
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-3xl font-bold tracking-tight'>编辑专辑</h1>
@@ -139,24 +139,13 @@ export default function EditAlbumPage() {
         </Button>
       </div>
 
-      <Card className='w-full max-w-2xl mx-auto'>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-2'>
-            <IconEdit className='h-5 w-5' />
-            编辑专辑信息
-          </CardTitle>
-          <CardDescription>修改专辑的基本信息和关联模特</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <AlbumForm
-            initialData={initialData}
-            isEditing={true}
-            isLoading={isLoading}
-            onCancel={handleCancel}
-            onSubmit={handleUpdateAlbum}
-          />
-        </CardContent>
-      </Card>
+      <AlbumForm
+        initialData={initialData}
+        isEditing={true}
+        isLoading={isLoading}
+        onCancel={handleCancel}
+        onSubmit={handleUpdateAlbum}
+      />
     </div>
   )
 }
